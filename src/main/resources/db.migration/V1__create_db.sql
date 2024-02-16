@@ -1,0 +1,20 @@
+CREATE TABLE Client (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR NOT NULL CHECK (LENGTH(name) BETWEEN 3 AND 200)
+);
+
+CREATE TABLE Planet (
+    id VARCHAR PRIMARY KEY CONSTRAINT chk_id CHECK (id ~ '^[A-Z0-9]+$'),
+    name VARCHAR NOT NULL CHECK (LENGTH(name) BETWEEN 3 AND 200)
+);
+
+CREATE TABLE Ticket (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    client_id INTEGER,
+    from_planet_id VARCHAR,
+    to_planet_id VARCHAR,
+    CONSTRAINT client_id FOREIGN KEY (client_id) REFERENCES Client(id) ON DELETE CASCADE,
+    CONSTRAINT from_planet_id FOREIGN KEY (from_planet_id) REFERENCES Planet(id) ON DELETE CASCADE,
+    CONSTRAINT to_planet_id FOREIGN KEY (to_planet_id) REFERENCES Planet(id) ON DELETE CASCADE
+);
